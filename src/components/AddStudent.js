@@ -7,38 +7,49 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AddStudent = () => {
-  const [data, setData] = useState({
-    firstname: '',
-    lastname: '',
-    gender: '', // included gender
+  const [formData, setFormData] = useState({
+    firstname: "",
+    lastname: "",
+    gender: "",
   });
 
   const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  const saveStudent = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    axios.post('http://localhost:4000/api/addstudent', data)
-      .then(() => {
-        toast.success('Registration successful');
-      })
-      .catch((error) => {
-        console.error('Registration failed:', error.response?.data || error.message);
-        toast.error('Registration failed');
-      });
+    try {
+      console.log("Submitting data:", formData);
+      const response = await axios.post(
+        "http://localhost:4000/api/addStudent",
+        formData
+      );
+      console.log("Response from backend:", response.data);
+      toast.success("✅ Student added successfully");
+      setFormData({ firstname: "", lastname: "", gender: "" });
+    } catch (error) {
+      console.error("❌ Error:", error.response?.data || error.message);
+      toast.error(
+        error.response?.data?.error?.message || "Failed to add student."
+      );
+    }
   };
 
   return (
     <div className="register-container">
       <h2>Add Student</h2>
-      <Form onSubmit={saveStudent}>
+      <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Control
             name="firstname"
             type="text"
             placeholder="Enter firstname"
+            value={formData.firstname}
             onChange={handleChange}
             required
           />
@@ -49,6 +60,7 @@ const AddStudent = () => {
             name="lastname"
             type="text"
             placeholder="Enter lastname"
+            value={formData.lastname}
             onChange={handleChange}
             required
           />
@@ -57,6 +69,7 @@ const AddStudent = () => {
         <Form.Group className="mb-3">
           <Form.Select
             name="gender"
+            value={formData.gender}
             onChange={handleChange}
             required
           >

@@ -3,7 +3,6 @@ import './index.css';
 import Navbar from './components/navbar';
 import Login from './components/login';
 import AddStudent from './components/AddStudent';
-import Dashboard from './components/dashboard';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -20,9 +19,7 @@ function App() {
             <Route path="/AddStudent">
               <AddStudent />
             </Route>
-              <Route path="/dashboard"> 
-              <Dashboard />
-            </Route>
+              
           </Switch>
         </div>
       </div>
