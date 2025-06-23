@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory  } from 'react-router-dom'; 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { ToastContainer, toast } from 'react-toastify';
@@ -7,8 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
 const Login = () => {
-    const [data, setData] = useState({ email: '', password: '' });
-
+    const [data, setData] = useState({ firstname: '', lastname: '' });
+    const history = useHistory(); 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prev) => ({ ...prev, [name]: value }));
@@ -21,8 +21,11 @@ const Login = () => {
             .then(() => {
                 toast.success('Logged in successfully', {
                     position: 'top-right',
-                    autoClose: 3000,
+                    autoClose: 2000,
                 });
+                setTimeout(() => {
+                  history.push('/dashboard'); 
+                }, 2000);
             })
             .catch(() => {
                 toast.error('Login failed', {
@@ -36,24 +39,24 @@ const Login = () => {
         <div className="login-container">
             <h2>Login</h2>
             <Form onSubmit={handleSubmit}>
-             <Form.Group className="mb-3" >
-            <Form.Control name="email" type="text" onChange={handleChange} placeholder="Enter email" required/>
-            </Form.Group>
-        
-            
-             <Form.Group className="mb-3" >
-            <Form.Control name="password" type="text" onChange={handleChange} placeholder="Enter password" required/>
-            </Form.Group>
-                       
-             <Button variant="primary" type="submit">Login</Button>
-                    </Form>
+              <Form.Group className="mb-3">
+                <Form.Control name="firstname" type="text" onChange={handleChange} placeholder="Enter Firstname" required />
+              </Form.Group>
 
-             <p className="mt-3">
-                 Not a user? <Link to="/register">register</Link>
-                   </p>
-             <ToastContainer />
-                </div>
-                );
+              <Form.Group className="mb-3">
+                <Form.Control name="lastname" type="text" onChange={handleChange} placeholder="Enter Lastname" required />
+              </Form.Group>
+
+              <Button variant="primary" type="submit">Login</Button>
+            </Form>
+
+            <p className="mt-3">
+                Not a user? <Link to="/AddStudent">AddStudent</Link>
+            </p>
+            <ToastContainer />
+        </div>
+    );
 };
- export default Login;
+
+export default Login;
 
